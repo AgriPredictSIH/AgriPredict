@@ -10,12 +10,31 @@ export async function chatAPI(message) {
   return res.json();
 }
 
-/* Crop Recommendation (ML + AI) */
-export async function cropAPI(data) {
-  const res = await fetch(`${BASE}/hybrid`, {
+export async function cropAPI(data, token) {
+  const res = await fetch("http://localhost:5001/api/genai/hybrid", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
     body: JSON.stringify(data)
   });
+
   return res.json();
 }
+
+
+
+
+export async function getCropHistory(token) {
+  const res = await fetch(
+    `${BASE}/crop-history`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  return res.json();
+}
+

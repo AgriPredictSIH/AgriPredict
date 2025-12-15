@@ -10,6 +10,9 @@ export async function getCropRecommendation(input) {
       body: JSON.stringify(input)
     }
   );
+  if (!res.ok) {
+    throw new Error("ML service failed");
+  }
 
   return res.json();
 }
