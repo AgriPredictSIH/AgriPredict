@@ -11,12 +11,12 @@ export async function chat(prompt) {
     });
 
     return res.choices[0].message.content;
+
   } catch (err) {
-    console.error("LLM ERROR:", err.message);
+    console.error("LLM ERROR:", err?.error?.message || err.message);
     throw new Error("LLM service failed");
   }
 }
-
 /* =========================
    JSON RESPONSE
 ========================= */

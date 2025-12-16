@@ -5,41 +5,50 @@ import { AuthContext } from "../context/AuthContext";
 export default function CropHistory() {
   const { token } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (token) {
-      getCropHistory(token).then(setHistory);
+    async function loadHistory() {
+      if (!token) {
+        setError("Please login first");
+        return;
+      }
+
+      try {
+        const data = await getCropHistory(token);
+        setHistory(data);
+      } catch {
+        setError("Failed to load history");
+      }
     }
+
+    loadHistory();
   }, [token]);
 
-  if (!token) return <p>Please login to view crop history</p>;
-
   return (
-    <div className="page">
+    <div style={{ padding: 20 }}>
       <h2>🌾 Crop Recommendation History</h2>
 
-      {history.length === 0 && <p>No history found</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {history.map((item, index) => (
-        <div key={index} className="history-card">
-          <h4>Input Data</h4>
-          <p>Soil: {item.input.soil}</p>
-          <p>Rainfall: {item.input.rainfall} mm</p>
-          <p>Temperature: {item.input.temperature} °C</p>
+      {history.length === 0 && <p>No history yet</p>}
 
-          <h4>Recommendation</h4>
-          <p>
-            <b>Crop:</b> {item.result.mlResult?.crop}
-          </p>
-          <p>
-            <b>Explanation:</b> {item.result.explanation}
-          </p>
+      {history.map(item => (
+        <div
+          key={item._id}
+          style={{
+            border: "1px solid #ccc",
+            padding: 10,
+            marginBottom: 10
+          }}
+        >
+          <p><b>Date:</b> {new Date(item.createdAt).toLocaleString()}</p>
 
-          <small>
-            {new Date(item.createdAt).toLocaleString()}
-          </small>
+          <p><b>Input:</b></p>
+          <pre>{JSON.stringify(item.input, null, 2)}</pre>
 
-          <hr />
+          <p><b>Result:</b></p>
+          <pre>{JSON.stringify(item.result, null, 2)}</pre>
         </div>
       ))}
     </div>
