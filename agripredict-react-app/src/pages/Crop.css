@@ -1,0 +1,84 @@
+.crop-container {
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  background: #f7fdf7;
+}
+
+.crop-container h1 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.form-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 450px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}
+
+.form-card h3 {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: #5cb85c;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #9ccc9c;
+}
+
+.error {
+  margin-top: 10px;
+  color: red;
+}
+
+.result-card {
+  margin-top: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid #9ad29a;
+}
+
+.result-card h2 {
+  color: #2e7d32;
+}
+
+.desc {
+  margin: 10px 0;
+  color: #2e7d32;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.stats div span {
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 14px;
+}
