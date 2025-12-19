@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { cropAPI } from "../api/genaiApi";
 import { AuthContext } from "../context/AuthContext";
-import "./Crop.css";
+import "../assets/css/Crop.css";
 
 export default function Crop() {
   const { token } = useContext(AuthContext);
