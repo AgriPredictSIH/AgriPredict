@@ -1,0 +1,358 @@
+/* Disease Detection Component Styles */
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+  padding: 40px 20px;
+}
+
+.container {
+  margin: 0 auto;
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header Styles */
+.container h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.container h2 span {
+  font-size: 2.5rem;
+}
+
+/* Two Column Layout */
+.two-column-layout {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* Card Styles */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #24292e;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Form Group Styles */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #24292e;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e1e4e8;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: #fafbfc;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2ea44f;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(46, 164, 79, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #959da5;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group input[type="file"] {
+  padding: 12px;
+  background: #f5f7fa;
+  cursor: pointer;
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button {
+  padding: 8px 16px;
+  background: #2ea44f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 12px;
+  transition: background 0.2s ease;
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button:hover {
+  background: #2c974b;
+}
+
+/* Image Preview */
+.image-preview {
+  margin: 16px 0 24px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #e1e4e8;
+  background: #f6f8fa;
+  max-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Button Styles */
+button {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2ea44f 0%, #2c974b 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: 0 4px 12px rgba(46, 164, 79, 0.3);
+}
+
+button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2c974b 0%, #2a8f47 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(46, 164, 79, 0.4);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background: #94d3a2;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Results Card */
+.results-card {
+  margin-top: 32px;
+  border-left: 5px solid #2196f3;
+  background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+  animation: slideIn 0.5s ease-out;
+}
+
+.results-header {
+  color: #1976d2 !important;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.4rem;
+}
+
+.results-content {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 10px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 2px solid #bbdefb;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #24292e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: 'Courier New', monospace;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .two-column-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .container h2 {
+    font-size: 2rem;
+  }
+  
+  .container h2 span {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 24px 16px;
+  }
+  
+  .container h2 {
+    font-size: 1.75rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .card {
+    padding: 24px 20px;
+  }
+  
+  .card h3 {
+    font-size: 1.15rem;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+  
+  button {
+    padding: 14px;
+    font-size: 1rem;
+  }
+  
+  .image-preview {
+    max-height: 200px;
+  }
+  
+  .results-content {
+    padding: 16px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 20px 12px;
+  }
+  
+  .container h2 {
+    font-size: 1.5rem;
+  }
+  
+  .card {
+    padding: 20px 16px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .results-content {
+    padding: 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Loading State Animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button:disabled::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+}
+
+/* Accessibility Improvements */
+*:focus-visible {
+  outline: 2px solid #2ea44f;
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .page {
+    background: white;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #e1e4e8;
+    page-break-inside: avoid;
+  }
+  
+  button {
+    display: none;
+  }
+  
+  .image-preview {
+    max-height: 400px;
+  }
+}

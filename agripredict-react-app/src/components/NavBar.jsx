@@ -101,11 +101,12 @@ export default function Navbar() {
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           style={{
+            margin: "0",
             display: "none",
             background: "none",
             color: "#2e7d32",
             fontSize: "1.8rem",
-            padding: "8px",
+            padding: "8px 0px",
             border: "none",
             cursor: "pointer",
             lineHeight: "1",
