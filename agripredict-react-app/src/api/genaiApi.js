@@ -1,4 +1,4 @@
-const BASE = "http://localhost:5001/api/genai";
+const BASE = "https://agripredict-1-t4qw.onrender.com/api/genai";
 
 /* Crop Recommendation (ML + AI) */
 export async function cropAPI(data) {

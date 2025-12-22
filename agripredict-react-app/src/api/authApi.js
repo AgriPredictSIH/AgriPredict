@@ -1,4 +1,4 @@
-const BASE = "http://localhost:5001/api/auth";
+const BASE = "https://agripredict-1-t4qw.onrender.com/api/auth";
 
 export async function registerUser(data) {
   const res = await fetch(`${BASE}/register`, {

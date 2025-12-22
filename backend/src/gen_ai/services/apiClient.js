@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:6001/api";
+const BASE_URL = "https://agripredict-022z.onrender.com/api";
 
 export async function apiRequest(endpoint, options = {}) {
   const config = {
