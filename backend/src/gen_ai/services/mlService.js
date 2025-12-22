@@ -1,37 +1,33 @@
-export async function getCropRecommendation(input) {
-  const res = await fetch("http://localhost:6001/api/ml/crop-recommendation", {
+import { apiRequest } from "./apiClient.js";
+
+/* Crop Recommendation */
+export function getCropRecommendation(input) {
+  return apiRequest("/ml/crop-recommendation", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input)
+    body: JSON.stringify(input),
   });
-  return res.json();
 }
 
-export async function detectDisease(input) {
-  const res = await fetch("http://localhost:6001/api/ml/disease-detect", {
+/* Disease Detection (text/data) */
+export function detectDisease(input) {
+  return apiRequest("/ml/disease-detect", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input)
+    body: JSON.stringify(input),
   });
-  return res.json();
 }
 
-export async function getMarketPrice(input) {
-  const res = await fetch("http://localhost:6001/api/ml/market-price", {
+/* Market Price */
+export function getMarketPrice(input) {
+  return apiRequest("/ml/market-price", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input)
+    body: JSON.stringify(input),
   });
-  return res.json();
 }
 
-
-export async function detectDiseaseFromImage(input) {
-  const res = await fetch("http://localhost:6001/api/ml/disease-from-image", {
+/* Disease Detection (image meta) */
+export function detectDiseaseFromImage(input) {
+  return apiRequest("/ml/disease-from-image", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input)
+    body: JSON.stringify(input),
   });
-  return res.json();
 }
-

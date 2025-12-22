@@ -1,4 +1,4 @@
-const BASE = "http://localhost:5001/api/genai";
+const BASE = import.meta.env.VITE_API_BASE;
 
 /* Crop Recommendation (ML + AI) */
 export async function cropAPI(data) {

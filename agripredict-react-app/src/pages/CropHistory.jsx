@@ -1,4 +1,5 @@
-"use client"
+
+
 
 import { useEffect, useState, useContext } from "react"
 import { getCropHistory } from "../api/genaiApi"
@@ -321,7 +322,7 @@ export default function CropHistory() {
 
         {/* History Cards */}
         <div style={{ display: "grid", gap: "24px" }}>
-          {history.map((item, index) => {
+          {Array.isArray(history) && history.map((item, index)  => {
             const resultData = item.result || {}
             const explanation = resultData.explanation || ""
             const mlResult = resultData.mlResult || resultData.ml_result || resultData

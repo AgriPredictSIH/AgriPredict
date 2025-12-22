@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/NavBar";
-import Footer from "./components/Footer"; // Import Footer
+import Footer from "./components/Footer";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -13,14 +13,19 @@ import CropHistory from "./pages/CropHistory";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       <AuthProvider>
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
           <Navbar />
-          
-          <div style={{ flex: 1 }}> {/* Ensures content pushes footer down */}
+
+          <div style={{ flex: 1 }}>
             <Routes>
-              <Route path="/" element={<Home/>} />
+              <Route path="/" element={<Home />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
