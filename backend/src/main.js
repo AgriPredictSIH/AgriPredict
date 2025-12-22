@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: "https://agri-predict-sandy.vercel.app"
+  origin:["https://agri-predict-sandy.vercel.app","https://agripredict-022z.onrender.com"] 
 }));
 app.use(express.json());
 

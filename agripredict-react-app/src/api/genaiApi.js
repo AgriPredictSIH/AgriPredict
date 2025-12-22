@@ -1,4 +1,4 @@
-const BASE = "https://agripredict-1-t4qw.onrender.com/api/genai";
+const BASE = import.meta.env.VITE_API_BASE;
 
 /* Crop Recommendation (ML + AI) */
 export async function cropAPI(data) {

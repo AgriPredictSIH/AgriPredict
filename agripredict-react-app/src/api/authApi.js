@@ -1,4 +1,4 @@
-const BASE = "https://agripredict-1-t4qw.onrender.com/api/auth";
+const BASE = import.meta.env.VITE_API_BASE;
 
 export async function registerUser(data) {
   const res = await fetch(`${BASE}/register`, {
