@@ -10,13 +10,24 @@ export async function chat(prompt) {
       messages: [{ role: "user", content: prompt }]
     });
 
-    return res.choices[0].message.content;
+    // ✅ Defensive parsing (CRITICAL)
+    const content =
+      res?.choices?.[0]?.message?.content ||
+      res?.choices?.[0]?.delta?.content;
+
+    if (!content) {
+      console.error("INVALID LLM RESPONSE:", JSON.stringify(res, null, 2));
+      throw new Error("Empty response from LLM");
+    }
+
+    return content;
 
   } catch (err) {
-    console.error("LLM ERROR:", err?.error?.message || err.message);
-    throw new Error("LLM service failed");
+    console.error("LLM ERROR FULL:", err);
+    throw err; // ❗ DO NOT MASK ERROR
   }
 }
+
 /* =========================
    JSON RESPONSE
 ========================= */
