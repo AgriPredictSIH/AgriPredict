@@ -1,43 +1,19 @@
+import { openaiClient } from "./openaiClient.js";
 
 /* =========================
    CORE CHAT
 ========================= */
 export async function chat(prompt) {
   try {
-    const response = await fetch(
-      `${process.env.OPENROUTER_BASE_URL}/chat/completions`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "HTTP-Referer": process.env.OPENROUTER_SITE_URL,
-          "X-Title": process.env.OPENROUTER_SITE_NAME
-        },
-        body: JSON.stringify({
-          model: process.env.OPENROUTER_MODEL,
-          messages: [{ role: "user", content: prompt }]
-        })
-      }
-    );
+    const res = await openaiClient.chat.completions.create({
+      model: process.env.OPENROUTER_MODEL,
+      messages: [{ role: "user", content: prompt }]
+    });
 
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`OpenRouter error: ${errText}`);
-    }
-
-    const data = await response.json();
-
-    const content = data?.choices?.[0]?.message?.content;
-    if (!content) {
-      throw new Error("No content returned from OpenRouter");
-    }
-
-    return content;
-
+    return res.choices[0].message.content;
   } catch (err) {
-    console.error("OPENROUTER LLM ERROR:", err);
-    throw err;
+    console.error("LLM ERROR:", err.message);
+    throw new Error("LLM service failed");
   }
 }
 

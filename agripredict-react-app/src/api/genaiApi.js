@@ -4,7 +4,7 @@ const BASE = import.meta.env.VITE_API_BASE;
 export async function cropAPI(data) {
   const token = localStorage.getItem("token"); // 👈 GET TOKEN
 
-  const res = await fetch(`${BASE}/hybrid`, {
+  const res = await fetch(`${BASE}/genai/hybrid`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export async function cropAPI(data) {
 export async function chatAPI(message) {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`${BASE}/chat`, {
+  const res = await fetch(`${BASE}/genai/chat`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +36,7 @@ export async function chatAPI(message) {
 export async function getCropHistory() {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`${BASE}/crop-history`, {
+  const res = await fetch(`${BASE}/genai/crop-history`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -64,7 +64,7 @@ export async function diseaseAPI(data) {
 export async function diseaseImageAPI(formData) {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`${BASE}/disease-image`, {
+  const res = await fetch(`${BASE}/genai/disease-image`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`
