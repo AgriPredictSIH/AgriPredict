@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get("/health", (_, res) => res.json({ status: "ok" }));
 
-router.post("/chat", chatController);
+router.post("/chat",protect, chatController);
 router.post("/rag/add", ragAdd);
 router.post("/rag/query", ragQuery);
 router.post("/hybrid", protect,hybridController);

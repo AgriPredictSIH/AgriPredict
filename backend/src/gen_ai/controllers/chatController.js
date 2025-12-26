@@ -1,7 +1,6 @@
-import { chat } from "../engine/llm/llmFacade.js";
-
 export async function chatController(req, res) {
   try {
+    console.log("USER:", req.user?._id);
     console.log("BODY:", req.body);
 
     const { message } = req.body;
@@ -10,10 +9,10 @@ export async function chatController(req, res) {
     }
 
     const answer = await chat(message);
-    res.json({ answer });
 
+    res.json({ answer });
   } catch (err) {
-    console.error("CHAT CONTROLLER ERROR:", err.message);
+    console.error("CHAT CONTROLLER ERROR:", err);
     res.status(500).json({ error: "AI service unavailable" });
   }
 }
