@@ -12,9 +12,11 @@ export async function chat(prompt) {
 
     return res.choices[0].message.content;
   } catch (err) {
-    console.error("LLM ERROR:", err.message);
-    throw new Error("LLM service failed");
-  }
+  console.error("OPENROUTER STATUS:", err?.response?.status);
+  console.error("OPENROUTER DATA:", err?.response?.data);
+  throw new Error("LLM service failed");
+}
+
 }
 
 /* =========================
