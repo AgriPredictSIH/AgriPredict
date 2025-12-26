@@ -1,6 +1,5 @@
 const BASE = import.meta.env.VITE_API_BASE;
 
-/* Crop Recommendation (ML + AI) */
 export async function cropAPI(data) {
   const token = localStorage.getItem("token"); // 👈 GET TOKEN
 
@@ -8,8 +7,7 @@ export async function cropAPI(data) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}` // 👈 SEND TOKEN
-    },
+      Authorization: `Bearer ${token}` 
     body: JSON.stringify(data)
   });
 
