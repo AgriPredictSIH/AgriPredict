@@ -7,7 +7,8 @@ export async function cropAPI(data) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}` 
+      Authorization: `Bearer ${token}` // 👈 SEND TOKEN
+    },
     body: JSON.stringify(data)
   });
 
