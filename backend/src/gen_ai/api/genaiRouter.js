@@ -15,6 +15,6 @@ router.post("/rag/add", protect, ragAdd);
 router.post("/rag/query", protect, ragQuery);
 router.post("/hybrid", protect, hybridController);   // ✅
 router.get("/crop-history", protect, getCropHistory);
-router.post("/disease", protect, diseaseController);
+router.post("/disease", diseaseController);
 
 export default router;

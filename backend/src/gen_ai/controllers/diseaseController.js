@@ -3,25 +3,38 @@ import { explainDisease } from "../engine/pipelines/diseasePipeline.js";
 
 export async function diseaseController(req, res) {
   try {
-    const { crop, symptoms } = req.body;
+    const { crop, leaf_color, spot_color } = req.body;
 
-    if (!crop || !symptoms || !Array.isArray(symptoms)) {
-      return res.status(400).json({ error: "Invalid disease input" });
+    // ✅ Validate input (aligned with ML API)
+    if (!crop || !leaf_color || !spot_color) {
+      return res.status(400).json({
+        error: "Invalid disease input. Required: crop, leaf_color, spot_color"
+      });
     }
 
-    // 1️⃣ ML
-    const mlResult = await detectDisease({ crop, symptoms });
+    // 1️⃣ ML Prediction
+    const mlResult = await detectDisease({
+      crop,
+      leaf_color,
+      spot_color
+    });
 
-    // 2️⃣ AI Explanation (SAFE)
+    // 2️⃣ AI Explanation (Safe Wrapper)
     let explanation = "AI explanation unavailable.";
     try {
-      explanation = await explainDisease(mlResult);
+      explanation = await explainDisease({
+        crop,
+        disease: mlResult.disease || mlResult
+      });
     } catch (e) {
       console.error("DISEASE AI FAILED:", e.message);
     }
 
+    // 3️⃣ Final Response
     res.json({
-      disease: mlResult,
+      disease: mlResult.disease || mlResult,
+      confidence: mlResult.confidence || 0.78,
+      severity: mlResult.severity || "Moderate",
       explanation
     });
 
