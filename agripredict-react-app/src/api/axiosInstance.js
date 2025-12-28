@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5001/api", // backend base
+  baseURL: "https://agripredict-1-t4qw.onrender.com/api", // backend base
   headers: {
     "Content-Type": "application/json"
   }
