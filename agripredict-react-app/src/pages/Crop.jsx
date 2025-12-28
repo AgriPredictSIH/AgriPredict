@@ -1,14 +1,19 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { cropAPI } from "../api/genaiApi";
-import { AuthContext } from "../context/AuthContext";
 import "../assets/css/Crop.css";
 
 export default function Crop() {
-  const { token } = useContext(AuthContext);
+  const [soil, setSoil] = useState("Loamy");
 
-  const [soil, setSoil] = useState("Sandy");
-  const [rainfall, setRainfall] = useState("");
+  const [nitrogen, setNitrogen] = useState("");
+  const [phosphorus, setPhosphorus] = useState("");
+  const [potassium, setPotassium] = useState("");
+
   const [temperature, setTemperature] = useState("");
+  const [humidity, setHumidity] = useState("");
+  const [ph, setPh] = useState("");
+  const [rainfall, setRainfall] = useState("");
+
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,28 +22,24 @@ export default function Crop() {
     setError("");
     setResult(null);
 
-    if (!token) {
-      setError("Please login first");
-      return;
-    }
-
     try {
       setLoading(true);
 
       const data = await cropAPI({
         soil,
-        rainfall: Number(rainfall),
-        temperature: Number(temperature)
+        nitrogen: Number(nitrogen),
+        phosphorus: Number(phosphorus),
+        potassium: Number(potassium),
+        temperature: Number(temperature),
+        humidity: Number(humidity),
+        ph: Number(ph),
+        rainfall: Number(rainfall)
       });
-
-      if (!data || !data.crop) {
-        throw new Error("Invalid response from server");
-      }
 
       setResult(data);
     } catch (err) {
       console.error(err);
-      setError("Failed to fetch crop recommendation");
+      setError("Prediction failed. Please check inputs.");
     } finally {
       setLoading(false);
     }
@@ -46,77 +47,73 @@ export default function Crop() {
 
   return (
     <div className="crop-container">
-      <h1>
-        Get AI-powered crop recommendations based on your soil and weather
-        conditions
-      </h1>
+      <h1>🌾 AI Crop Recommendation</h1>
 
       <div className="form-card">
         <h3>📋 Enter Field Details</h3>
 
+        {/* Soil */}
         <label>Soil Type</label>
         <select value={soil} onChange={e => setSoil(e.target.value)}>
-          <option value="Sandy">Sandy</option>
-          <option value="Clay">Clay</option>
-          <option value="Loamy">Loamy</option>
-          <option value="Black">Black</option>
-          <option value="Red">Red</option>
+          <option>Loamy</option>
+          <option>Sandy</option>
+          <option>Clay</option>
+          <option>Black</option>
+          <option>Red</option>
         </select>
 
-        <label>Annual Rainfall (mm)</label>
-        <input
-          type="number"
-          value={rainfall}
-          onChange={e => setRainfall(e.target.value)}
-          placeholder="e.g. 700"
-        />
+        {/* NPK */}
+        <label>Nitrogen (N)</label>
+        <input type="number" value={nitrogen} onChange={e => setNitrogen(e.target.value)} />
 
-        <label>Average Temperature (°C)</label>
-        <input
-          type="number"
-          value={temperature}
-          onChange={e => setTemperature(e.target.value)}
-          placeholder="e.g. 28"
-        />
+        <label>Phosphorus (P)</label>
+        <input type="number" value={phosphorus} onChange={e => setPhosphorus(e.target.value)} />
+
+        <label>Potassium (K)</label>
+        <input type="number" value={potassium} onChange={e => setPotassium(e.target.value)} />
+
+        {/* Climate */}
+        <label>Temperature (°C)</label>
+        <input type="number" value={temperature} onChange={e => setTemperature(e.target.value)} />
+
+        <label>Humidity (%)</label>
+        <input type="number" value={humidity} onChange={e => setHumidity(e.target.value)} />
+
+        <label>Soil pH</label>
+        <input type="number" step="0.1" value={ph} onChange={e => setPh(e.target.value)} />
+
+        <label>Rainfall (mm)</label>
+        <input type="number" value={rainfall} onChange={e => setRainfall(e.target.value)} />
 
         <button onClick={submit} disabled={loading}>
-          {loading ? "Predicting..." : "Predict Best Crop"}
+          {loading ? "Predicting..." : "Predict Crop"}
         </button>
 
         {error && <p className="error">{error}</p>}
       </div>
 
-      {result && result.crop && (
+      {/* RESULT */}
+      {result && (
         <div className="result-card">
-          <h3>✅ Recommended Crop</h3>
-          <h2>{result.crop.crop}</h2>
+          <h2>✅ Recommended Crop</h2>
+          <h1>{result.crop}</h1>
 
-          <p className="desc">
-            {result.crop.reasoning || "No reasoning available"}
-          </p>
+          <p>{result.reasoning}</p>
 
           <div className="stats">
             <div>
-              <span>CONFIDENCE SCORE</span>
-              <h2>
-                {result.crop.confidence
-                  ? Math.round(result.crop.confidence * 100) + "%"
-                  : "N/A"}
-              </h2>
+              <span>Confidence</span>
+              <h3>{Math.round(result.confidence * 100)}%</h3>
             </div>
 
             <div>
-              <span>EXPECTED YIELD</span>
-              <h2>{result.crop.expected_yield || "N/A"}</h2>
+              <span>Expected Yield</span>
+              <h3>{result.expectedYield}</h3>
             </div>
           </div>
 
-          <div style={{ marginTop: "15px", color: "#2e7d32" }}>
-            <strong>AI Explanation:</strong>
-            <pre style={{ whiteSpace: "pre-wrap" }}>
-              {result.explanation}
-            </pre>
-          </div>
+          <h3>🤖 AI Explanation</h3>
+          <pre>{result.explanation}</pre>
         </div>
       )}
     </div>

@@ -3,69 +3,37 @@ import CropHistory from "../../models/CropHistory.js";
 import { explainMLResult } from "../engine/pipelines/hybridPipeline.js";
 
 export async function hybridController(req, res) {
-  // 🔐 Auth safety
-  if (!req.user || !req.user._id) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  let mlResult;
-
-  /* =========================
-     1️⃣ ML PREDICTION (CRITICAL)
-  ========================= */
   try {
-    mlResult = await getCropRecommendation(req.body);
-  } catch (mlErr) {
-    console.error("ML SERVICE FAILED:", mlErr.message);
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
-    return res.status(503).json({
-      error: "ML service unavailable. Please try again later."
-    });
-  }
+    const mlResult = await getCropRecommendation(req.body);
 
-  // Validate ML output
-  if (!mlResult || !mlResult.crop) {
-    console.error("INVALID ML OUTPUT:", mlResult);
+    if (!mlResult?.crop) {
+      throw new Error("Invalid ML response");
+    }
 
-    return res.status(500).json({
-      error: "Invalid ML response"
-    });
-  }
+    let explanation = "AI explanation unavailable.";
+    try {
+      explanation = await explainMLResult(mlResult);
+    } catch {}
 
-  /* =========================
-     2️⃣ GENAI EXPLANATION (OPTIONAL)
-  ========================= */
-  let explanation = "AI explanation currently unavailable.";
+    const finalResult = {
+      ...mlResult,
+      explanation
+    };
 
-  try {
-    explanation = await explainMLResult(mlResult);
-  } catch (aiErr) {
-    console.error("GENAI FAILED:", aiErr.message);
-    // intentionally ignored
-  }
-
-  /* =========================
-     3️⃣ SAVE HISTORY (NON-BLOCKING)
-  ========================= */
-  try {
     await CropHistory.create({
       user: req.user._id,
       input: req.body,
-      result: {
-        crop: mlResult,
-        explanation
-      }
+      result: finalResult
     });
-  } catch (dbErr) {
-    console.error("DB SAVE FAILED:", dbErr.message);
-    // do NOT fail request
-  }
 
-  /* =========================
-     4️⃣ FINAL RESPONSE
-  ========================= */
-  return res.json({
-    crop: mlResult,
-    explanation
-  });
+    res.json(finalResult);
+
+  } catch (err) {
+    console.error("HYBRID ERROR:", err.message);
+    res.status(500).json({ error: "Crop recommendation failed" });
+  }
 }

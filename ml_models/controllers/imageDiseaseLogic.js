@@ -1,18 +1,10 @@
-export function detectDiseaseFromImage(filename, crop) {
-  // MOCK logic based on filename
-  if (filename.toLowerCase().includes("yellow")) {
-    return {
-      crop,
-      detected_symptoms: ["yellow leaves", "curling"],
-      disease: "Leaf Curl Virus",
-      confidence: 0.84
-    };
-  }
+export async function detectDiseaseFromImage(req, res) {
+  const { filename, crop } = req.body;
 
-  return {
+  res.json({
     crop,
-    detected_symptoms: [],
-    disease: "Healthy",
-    confidence: 0.9
-  };
+    disease: "Powdery Mildew",
+    confidence: 0.81,
+    recommendation: "Apply sulfur-based fungicide"
+  });
 }

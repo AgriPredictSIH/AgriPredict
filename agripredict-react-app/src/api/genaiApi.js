@@ -1,45 +1,43 @@
 import api from "./axiosInstance";
+
 /* =========================
-   CROP HYBRID (ML + AI)
+   CROP HYBRID
 ========================= */
 export async function cropAPI(data) {
   const res = await api.post("/genai/hybrid", data);
-
-  if (!res.crop) {
-    throw new Error("Invalid response from server");
-  }
-
-  return res;
-}
-
-/* =========================
-   AI CHAT
-========================= */
-export async function chatAPI(message) {
-  return api.post("/genai/chat", { message });
+  return res.data; // ✅ IMPORTANT
 }
 
 /* =========================
    CROP HISTORY
 ========================= */
 export async function getCropHistory() {
-  return api.get("/genai/crop-history");
+  const res = await api.get("/genai/crop-history");
+  return res.data;
+}
+
+/* =========================
+   AI CHAT
+========================= */
+export async function chatAPI(message) {
+  const res = await api.post("/genai/chat", { message });
+  return res.data;
 }
 
 /* =========================
    DISEASE (TEXT)
 ========================= */
 export async function diseaseAPI(data) {
-  return api.post("/genai/disease", data);
+  const res = await api.post("/genai/disease", data);
+  return res.data;
 }
 
 /* =========================
    DISEASE (IMAGE)
 ========================= */
 export async function diseaseImageAPI(formData) {
-  return api.post("/genai/disease-image", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
+  const res = await api.post("/genai/disease-image", formData, {
+    headers: { "Content-Type": "multipart/form-data" }
   });
+  return res.data;
 }

@@ -1,42 +1,30 @@
-export function recommendCrop({ soil, rainfall, temperature }) {
-  // ✅ Normalize input
-  const soilType = soil.toLowerCase();
+import { PythonShell } from "python-shell";
+import path from "path";
 
-  if (soilType === "sandy" && rainfall < 600) {
-    return {
-      crop: "Millets",
-      confidence: 0.75,
-      expected_yield: "20 quintals/hectare",
-      reasoning:
-        "Low rainfall and sandy soil favor drought-resistant crops like millets."
+export async function recommendCrop(req, res) {
+  try {
+    const options = {
+      scriptPath: path.join(process.cwd(), "python"),
+      args: [JSON.stringify(req.body)]
     };
-  }
 
-  if (soilType === "clay" && rainfall > 800) {
-    return {
-      crop: "Rice",
-      confidence: 0.82,
-      expected_yield: "30 quintals/hectare",
-      reasoning:
-        "High rainfall and clay soil retain water well, ideal for rice cultivation."
-    };
-  }
+    PythonShell.run("crop_predict.py", options, (err, result) => {
+      if (err) {
+        console.error("ML ERROR:", err);
+        return res.status(500).json({ error: "ML prediction failed" });
+      }
 
-  if (soilType === "loamy" && rainfall >= 600 && rainfall <= 800) {
-    return {
-      crop: "Wheat",
-      confidence: 0.78,
-      expected_yield: "25 quintals/hectare",
-      reasoning:
-        "Moderate rainfall and loamy soil are suitable for wheat growth."
-    };
-  }
+      const parsed = JSON.parse(result[0]);
 
-  return {
-    crop: "Groundnut",
-    confidence: 0.65,
-    expected_yield: "18 quintals/hectare",
-    reasoning:
-      "Balanced soil and climate conditions favor oilseed crops like groundnut."
-  };
+      res.json({
+        crop: parsed.crop,
+        confidence: parsed.confidence,
+        expectedYield: parsed.expectedYield,
+        reasoning: parsed.reasoning
+      });
+    });
+  } catch (err) {
+    console.error("CROP CONTROLLER ERROR:", err.message);
+    res.status(500).json({ error: "Crop prediction failed" });
+  }
 }

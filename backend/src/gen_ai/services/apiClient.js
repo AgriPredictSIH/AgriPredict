@@ -1,21 +1,30 @@
-const BASE_URL = "https://agripredict-022z.onrender.com/api";
-
+const ML_BASE_URL = "https://agripredictml-1.onrender.com/api"; // ✅ IMPORTANT
 export async function apiRequest(endpoint, options = {}) {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-    ...options,
-  };
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
-  const res = await fetch(`${BASE_URL}${endpoint}`, config);
+  try {
+    const res = await fetch(`${ML_BASE_URL}${endpoint}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+      },
+      ...options,
+      signal: controller.signal
+    });
 
-  // 🔐 Handle non-200 responses safely
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({}));
-    throw new Error(error.error || "API request failed");
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`ML error ${res.status}: ${text}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    if (err.name === "AbortError") {
+      throw new Error("ML service timeout");
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeout);
   }
-
-  return res.json();
 }

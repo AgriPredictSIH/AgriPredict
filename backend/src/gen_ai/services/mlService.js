@@ -8,6 +8,7 @@ export function getCropRecommendation(input) {
   });
 }
 
+/*
 /* Disease Detection (text/data) */
 export function detectDisease(input) {
   return apiRequest("/ml/disease-detect", {

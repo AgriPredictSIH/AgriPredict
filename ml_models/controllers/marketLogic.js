@@ -1,14 +1,7 @@
-export function predictPrice({ crop }) {
-  const prices = {
-    Rice: 2200,
-    Millets: 1800,
-    Tomato: 1600
-  };
-
-  return {
-    crop,
-    price: prices[crop] || 1500,
-    trend: "stable",
-    confidence: 0.7
-  };
+export async function predictPrice(req, res) {
+  res.json({
+    crop: req.body.crop,
+    price_per_quintal: 2450,
+    trend: "Stable"
+  });
 }

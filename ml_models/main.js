@@ -1,28 +1,32 @@
 import express from "express";
 import cors from "cors";
+
 import { recommendCrop } from "./controllers/cropLogic.js";
 import { detectDisease } from "./controllers/diseaseLogic.js";
 import { predictPrice } from "./controllers/marketLogic.js";
 import { detectDiseaseFromImage } from "./controllers/imageDiseaseLogic.js";
+
 const app = express();
+const PORT = process.env.PORT || 6001;
+
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/ml/crop-recommendation", (req, res) => {
-  res.json(recommendCrop(req.body));
+/* =========================
+   HEALTH CHECK
+========================= */
+app.get("/health", (req, res) => {
+  res.json({ status: "ML service running" });
 });
 
-app.post("/api/ml/disease-detect", (req, res) => {
-  res.json(detectDisease(req.body));
-});
+/* =========================
+   ML ENDPOINTS
+========================= */
+app.post("/api/ml/crop-recommendation", recommendCrop);
+app.post("/api/ml/disease-detect", detectDisease);
+app.post("/api/ml/market-price", predictPrice);
+app.post("/api/ml/disease-from-image", detectDiseaseFromImage);
 
-app.post("/api/ml/market-price", (req, res) => {
-  res.json(predictPrice(req.body));
-});
-
-app.post("/api/ml/disease-from-image", (req, res) => {
-  const { filename, crop } = req.body;
-  res.json(detectDiseaseFromImage(filename, crop));
-});
-
-app.listen(6001, () => console.log("Mock ML running on 6001"));
+app.listen(PORT, () =>
+  console.log(`🚀 ML Service running on http://localhost:${PORT}`)
+);
