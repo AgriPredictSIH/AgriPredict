@@ -1,5 +1,6 @@
 import CropHistory from "../../models/CropHistory.js";
 import { normalizeMLResult } from "../engine/utils/normalizeMLResult.js";
+
 export async function getCropHistory(req, res) {
   try {
     if (!req.user) {
@@ -10,14 +11,18 @@ export async function getCropHistory(req, res) {
       user: req.user._id
     }).sort({ createdAt: -1 });
 
-    // 🔥 Normalize ML results BEFORE sending to frontend
     const normalizedHistory = history.map(item => {
       const obj = item.toObject();
+
+      const rawCrop =
+        obj.result?.crop?.crop ||   // new format
+        obj.result?.crop ||         // old format
+        null;
 
       return {
         ...obj,
         result: {
-          crop: normalizeMLResult(obj.result?.crop),
+          crop: normalizeMLResult(rawCrop),
           explanation: obj.result?.explanation || ""
         }
       };
@@ -25,7 +30,7 @@ export async function getCropHistory(req, res) {
 
     res.json(normalizedHistory);
   } catch (err) {
-    console.error("CROP HISTORY ERROR:", err.message);
+    console.error("CROP HISTORY ERROR:", err);
     res.status(500).json({ error: "Failed to fetch history" });
   }
 }
