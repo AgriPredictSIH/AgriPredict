@@ -63,6 +63,10 @@ export default function Disease() {
 
   // ================= IMAGE-BASED =================
   async function checkWithImage() {
+    alert("This feature isn’t available yet, but it’s actively being developed and will be released soon.");
+    return; 
+
+    /* Original code disabled:
     if (!crop || !image) {
       return alert("Please provide crop name and image");
     }
@@ -80,6 +84,7 @@ export default function Disease() {
     } finally {
       setLoading(false);
     }
+    */
   }
 
   return (

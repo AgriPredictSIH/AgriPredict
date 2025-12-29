@@ -113,7 +113,7 @@ export default function Navbar() {
           }}
           className="mobile-toggle"
         >
-          ☰
+          {mobileMenuOpen ? "✕" : "☰"}
         </button>
       </div>
 
