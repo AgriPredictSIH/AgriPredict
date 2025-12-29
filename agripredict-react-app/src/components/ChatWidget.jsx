@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useContext, useEffect, useRef } from "react"
-import { chatAPI } from "../api/genaiApi" //
-import { AuthContext } from "../context/AuthContext" //
-import { startListening } from "../utils/voice" //
+import ReactMarkdown from "react-markdown" // <--- IMPORT THIS
+import { chatAPI } from "../api/genaiApi"
+import { AuthContext } from "../context/AuthContext"
+import { startListening } from "../utils/voice"
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
@@ -28,12 +29,10 @@ export default function ChatWidget() {
     setIsListening(true)
     startListening(
       (text) => {
-        // Append spoken text to existing text so user can mix typing + voice
         setMsg((prev) => (prev ? prev + " " + text : text))
         setIsListening(false)
       },
       () => {
-        // Reset listening state on end or error
         setIsListening(false)
       }
     )
@@ -45,15 +44,13 @@ export default function ChatWidget() {
     if (!msg.trim()) return
 
     const userText = msg.trim()
-    setMsg("") // Clear input immediately
+    setMsg("")
     
-    // Add User Message
     setMessages((prev) => [...prev, { role: "user", text: userText }])
     setIsLoading(true)
 
     try {
       const res = await chatAPI(userText, token)
-      // Add AI Response
       setMessages((prev) => [...prev, { role: "ai", text: res.answer }])
     } catch (error) {
       setMessages((prev) => [
@@ -65,7 +62,7 @@ export default function ChatWidget() {
     }
   }
 
-  // --- Professional Styles (CSS-in-JS) ---
+  // --- Professional Styles ---
   const styles = {
     wrapper: {
       position: "fixed",
@@ -163,6 +160,13 @@ export default function ChatWidget() {
       borderBottomRightRadius: isUser ? "4px" : "16px",
       borderBottomLeftRadius: isUser ? "16px" : "4px",
     }),
+    // New style to make markdown content look cleaner inside bubbles
+    markdownContent: {
+      margin: 0,
+      padding: 0,
+      '& p': { margin: 0 }, 
+      '& ul': { margin: '0 0 0 20px', padding: 0 }
+    },
     footer: {
       padding: "16px",
       background: "#fff",
@@ -224,18 +228,19 @@ export default function ChatWidget() {
 
   return (
     <div style={styles.wrapper}>
-      {/* Dynamic Keyframes for animation */}
       <style>{`
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulseRed { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        /* Helper to reset default markdown margins */
+        .markdown-body p { margin: 0 0 8px 0; }
+        .markdown-body p:last-child { margin: 0; }
+        .markdown-body ul, .markdown-body ol { margin: 4px 0 4px 20px; padding: 0; }
       `}</style>
 
       {isOpen ? (
         <div style={styles.chatWindow}>
-          {/* Header */}
           <div style={styles.header}>
             <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-               {/* Logo placeholder if you want one, or just text */}
                <img src="/rsz_agripredict_logo.png" alt="" style={{height: "28px"}} />
                <div>
                   <div style={styles.headerTitle}>AgriBot</div>
@@ -247,18 +252,19 @@ export default function ChatWidget() {
             <button onClick={() => setIsOpen(false)} style={styles.closeBtn}>✕</button>
           </div>
 
-          {/* Messages */}
           <div style={styles.messagesArea}>
             {messages.map((m, i) => (
               <div key={i} style={styles.bubble(m.role === "user")}>
-                {m.text}
+                {/* --- CHANGED HERE: Wrap text in ReactMarkdown --- */}
+                <div className="markdown-body">
+                    <ReactMarkdown>{m.text}</ReactMarkdown>
+                </div>
               </div>
             ))}
             {isLoading && <div style={styles.typing}>AgriBot is typing...</div>}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area (Voice + Text) */}
           <div style={styles.footer}>
             <div style={styles.inputContainer}>
               <input
@@ -268,17 +274,13 @@ export default function ChatWidget() {
                 onChange={(e) => setMsg(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && send()}
               />
-              
-              {/* Voice Button */}
               <button 
                 onClick={handleVoiceInput}
                 style={{
                   ...styles.micBtn,
                   animation: isListening ? "pulseRed 1.5s infinite" : "none"
                 }}
-                title={isListening ? "Listening..." : "Click to Speak"}
               >
-                {/* Microphone Icon */}
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
                   <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
@@ -296,11 +298,7 @@ export default function ChatWidget() {
           </div>
         </div>
       ) : (
-        /* Floating Action Button */
-        <button 
-          onClick={() => setIsOpen(true)} 
-          style={styles.toggleBtn}
-        >
+        <button onClick={() => setIsOpen(true)} style={styles.toggleBtn}>
           💬
         </button>
       )}
