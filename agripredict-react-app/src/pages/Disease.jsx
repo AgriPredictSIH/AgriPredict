@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { diseaseAPI, diseaseImageAPI } from "../api/genaiApi";
-import "../assets/css/Disease,css"
+import "../assets/css/Disease.css"
 export default function Disease() {
   const [crop, setCrop] = useState("");
   const [leafColor, setLeafColor] = useState("");
