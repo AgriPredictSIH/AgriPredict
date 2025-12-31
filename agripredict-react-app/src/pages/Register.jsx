@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { registerUser } from "../api/authApi";
 import { Link, useNavigate } from "react-router-dom";
-import "../assests/css/Auth.css";
+import "../assets/css/Auth.css";
+
 
 export default function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
