@@ -1,0 +1,110 @@
+/* =========================
+   AUTH PAGE STYLING
+========================= */
+
+.auth-page {
+  max-width: 380px;
+  margin: 80px auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Title */
+.auth-page h2 {
+  margin-bottom: 22px;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Inputs */
+.auth-page input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-page input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Button */
+.auth-page button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-page button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+.auth-page button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Bottom text */
+.auth-page p {
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.auth-page a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-page a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   DARK MODE SUPPORT
+========================= */
+
+@media (prefers-color-scheme: dark) {
+  .auth-page {
+    background: #0f172a;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .auth-page h2 {
+    color: #e5e7eb;
+  }
+
+  .auth-page input {
+    background: #020617;
+    border-color: #1f2937;
+    color: #e5e7eb;
+  }
+
+  .auth-page input::placeholder {
+    color: #9ca3af;
+  }
+
+  .auth-page p {
+    color: #9ca3af;
+  }
+}
