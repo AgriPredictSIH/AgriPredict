@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { cropAPI } from "../api/genaiApi";
-import "../assets/css/Crop.css";
 
 export default function Crop() {
   const [soil, setSoil] = useState("Loamy");
