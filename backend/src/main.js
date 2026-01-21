@@ -24,6 +24,5 @@ await connectDB();
 app.use("/api/genai", genaiRouter);
 app.use("/api/auth", authRoutes);
 
-app.listen(process.env.PORT, () =>
-  console.log(`GenAI backend running on ${process.env.PORT}`)
-);
+
+export default app;
